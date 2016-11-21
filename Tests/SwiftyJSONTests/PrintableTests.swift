@@ -76,13 +76,13 @@ class PrintableTests: XCTestCase {
     func testArrayWithOptionals() {
         let array = [1,2,"4",5,"6",nil] as [Any?]
         let json = JSON(array)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString(options: [.ignoreNullValues: true]) else {
 			XCTFail("could not represent array")
 			return
 		}
 		description = description.replacingOccurrences(of: "\n", with: "")
         description = description.replacingOccurrences(of: " ", with: "")
-        XCTAssertEqual(description, "[1,2,\"4\",5,\"6\",null]")
+        XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
         XCTAssertTrue(json.debugDescription.lengthOfBytes(using: String.Encoding.utf8) > 0)
     }
@@ -110,7 +110,7 @@ class PrintableTests: XCTestCase {
     func testDictionaryWithOptionals() {
         let dict = ["1":2, "2":"two", "3": nil] as [String: Any?]
         let json = JSON(dict)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString(options: [.ignoreNullValues: true]) else {
 			XCTFail("could not represent dictionary")
 			return
 		}
@@ -119,6 +119,6 @@ class PrintableTests: XCTestCase {
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
         XCTAssertTrue(description.range(of: "\"1\":2", options: NSString.CompareOptions.caseInsensitive) != nil)
         XCTAssertTrue(description.range(of: "\"2\":\"two\"", options: NSString.CompareOptions.caseInsensitive) != nil)
-        XCTAssertTrue(description.range(of: "\"3\":null", options: NSString.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(description.range(of: "\"3\"", options: NSString.CompareOptions.caseInsensitive) == nil)
     }
 }

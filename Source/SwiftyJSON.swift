@@ -624,7 +624,7 @@ extension JSON: Swift.RawRepresentable {
         switch self.type {
 		case .dictionary:
 			do {
-				if !(options[.castNilToNSNull] as? Bool ?? false) {
+				if !(options[.ignoreNullValues] as? Bool ?? false) {
 					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
 					let data = try self.rawData(options: jsonOption)
 					return String(data: data, encoding: encoding)
@@ -633,14 +633,7 @@ extension JSON: Swift.RawRepresentable {
 				guard let dict = self.object as? [String: Any?] else {
 					return nil
 				}
-				let body = try dict.keys.map { key throws -> String in
-					guard let value = dict[key] else {
-						return "\"\(key)\": null"
-					}
-					guard value != nil else {
-						return "\"\(key)\": null"
-					}
-
+				let body = try dict.filter{ $1 != nil }.map{ key, value throws -> String in
 					let nestedValue = JSON(value)
 					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
 						throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
@@ -658,7 +651,7 @@ extension JSON: Swift.RawRepresentable {
 			}
 		case .array:
             do {
-				if !(options[.castNilToNSNull] as? Bool ?? false) {
+				if !(options[.ignoreNullValues] as? Bool ?? false) {
 					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
 					let data = try self.rawData(options: jsonOption)
 					return String(data: data, encoding: encoding)
@@ -667,11 +660,7 @@ extension JSON: Swift.RawRepresentable {
                 guard let array = self.object as? [Any?] else {
                     return nil
                 }
-                let body = try array.map { value throws -> String in
-                    guard value != nil else {
-                        return "null"
-                    }
-
+                let body = try array.filter{ $0 != nil }.map { value throws -> String in
                     let nestedValue = JSON(value)
                     guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
                         throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
@@ -683,7 +672,7 @@ extension JSON: Swift.RawRepresentable {
                     }
                 }
 
-                return "[\(body.joined(separator: ","))]"
+				return "[\(body.joined(separator: ","))]"
             } catch _ {
                 return nil
             }
@@ -1434,7 +1423,7 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
 public enum writtingOptionsKeys {
 	case jsonSerialization
-	case castNilToNSNull
+	case ignoreNullValues
 	case maxObjextDepth
 	case encoding
 }
