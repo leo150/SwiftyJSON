@@ -753,6 +753,8 @@ extension JSON {
         set {
             if let array = newValue {
                 self.object = array as Any
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -794,6 +796,8 @@ extension JSON {
         set {
             if let v = newValue {
                 self.object = v as Any
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -816,6 +820,8 @@ extension JSON { // : Swift.Bool
         set {
             if let newValue = newValue {
                 self.object = newValue as Bool
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -859,6 +865,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSString(string:newValue)
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -899,9 +907,7 @@ extension JSON {
             }
         }
         set {
-            if let newValue = newValue {
-                self.object = newValue
-            }
+            self.object = newValue ?? NSNull()
         }
     }
 
@@ -977,9 +983,7 @@ extension JSON {
             }
         }
         set {
-			if let absoluteString = newValue?.absoluteString {
-				self.object = absoluteString
-			}
+            self.object = newValue?.absoluteString ?? NSNull()
         }
     }
 }
@@ -995,6 +999,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -1015,6 +1021,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -1039,6 +1047,9 @@ extension JSON {
             if let newValue = newValue
             {
                 self.object = NSNumber(value: newValue)
+            } else
+            {
+                self.object = NSNull()
             }
         }
     }
@@ -1059,6 +1070,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object = NSNull()
             }
         }
     }
@@ -1079,6 +1092,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: Int(newValue))
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1099,6 +1114,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1119,6 +1136,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1139,6 +1158,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1159,6 +1180,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1179,6 +1202,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1199,6 +1224,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
@@ -1219,6 +1246,8 @@ extension JSON {
         set {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
+            } else {
+                self.object =  NSNull()
             }
         }
     }
